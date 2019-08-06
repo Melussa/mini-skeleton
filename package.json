@@ -1,0 +1,58 @@
+{
+  "name": "weapp-typescript-stylus-starter",
+  "version": "1.0.1",
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "yarn && yarn build:npm",
+    "start": "yarn build:ts:watch & yarn build:styl:watch && fg",
+    "build": "yarn clean && yarn build:ts && yarn build:styl",
+    "build:ts": "tsc",
+    "build:ts:watch": "yarn build:ts -- -w",
+    "build:styl": "stylus `find src -name '*.styl'`",
+    "build:styl:watch": "yarn build:styl -- -w",
+    "build:npm": "cd src && yarn && rm -rf miniprogram_npm && cd .. && /Applications/wechatwebdevtools.app/Contents/MacOS/cli --build-npm `pwd` && gulp fixnpm",
+    "test": "jest",
+    "clean": "rm -f `find src \\( -path 'src/node_modules' -o -path 'src/miniprogram_npm' \\) -prune -o \\( -name '*.js' -o -name '*.wxss' -o -name '*.js.map' \\) -print`"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "chalk": "^2.4.2",
+    "dayjs": "^1.8.14",
+    "gulp": "^4.0.2",
+    "gulp-replace": "^1.0.0",
+    "husky": "^2.5.0",
+    "jest": "^24.8.0",
+    "lint-staged": "^8.2.1",
+    "minimist": "^1.2.0",
+    "prettier": "^1.18.2",
+    "stylus": "^0.54.5",
+    "stylus-supremacy": "^2.12.7",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "tslint-react-hooks": "^2.1.1",
+    "typescript": "^3.5.2",
+    "typescript-tslint-plugin": "^0.5.2"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "tslint --fix",
+      "git add"
+    ],
+    "*.{json,js,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.styl": [
+      "stylus-supremacy format --options ./.vscode/settings.json --replace",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
